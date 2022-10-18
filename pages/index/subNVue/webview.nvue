@@ -1,0 +1,48 @@
+<template>
+	<view>
+		11
+	</view>
+</template>
+
+<script>
+	// 	<web-view :fullscreen='false'></web-view>
+	export default {
+		data() {
+			return {
+				url: 'http://baidu.com',
+				web: null
+			}
+		},
+		onLoad() {
+			this.web = plus.webview.create(this.url, "", {
+				height: 200,
+				top: 0,
+				bounce: 'vertical',
+				plusrequire: "none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
+			})
+			const currentWebview = this.$scope.$getAppWebview();
+			currentWebview.append(this.web);
+			console.log(`this.web`, this.web);
+		},
+		beforeMount() {
+			uni.$on('start-loop', ({
+				url,
+				delay
+			}) => {
+				this.web.loadURL(url)
+			})
+		},
+		mounted() {
+			// const currentWebview = this.$scope.$getAppWebview();
+			// const wv = currentWebview.children()[0]
+			// console.log(111, wv);
+			// setTimeout(() => {
+			// 	wv.loadURL("http://qq.com")
+			// }, 5000)
+		}
+
+	}
+</script>
+
+<style>
+</style>
